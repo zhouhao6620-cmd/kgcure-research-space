@@ -1,0 +1,19 @@
+/* ============================================================================
+   KGcure 科研项目空间（详情页）｜样式调整层
+   ----------------------------------------------------------------------------
+   在抓取到的原始样式表之后加载，同权重下优先级最高。
+   原始样式不改（styles/base/ 保持线上原样），所有调整都写在本文件。
+
+   线上现有设计令牌（抓取自 https://ai.kgcure.com 计算样式）
+     --primary #1a5bff / --foreground #0f172a / --border #e2e8f0
+     --muted #f8fafc / --muted-foreground #64748b / --sidebar #f8fafc
+     --radius 8px
+     字体 "Source Han Sans CN", "Source Han Sans SC", "Noto Sans CJK SC",
+          "Microsoft YaHei", sans-serif
+     布局 --layout-sidebar 260px / --layout-safe 38px
+   页面结构
+     .kg-page-shell   内容栏，max-width 1036px，padding 32px 38px，gap 24px
+     .kg-page-title   项目标题
+   ========================================================================= */
+
+/* 说明：当前文件暂无视觉覆盖，仅作为本次优化的入口。 */

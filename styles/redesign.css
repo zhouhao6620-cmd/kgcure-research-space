@@ -1,0 +1,1065 @@
+/* ============================================================================
+   KGcure 科研项目空间｜工作区视觉规范 v2
+   ----------------------------------------------------------------------------
+   只做视觉层：模块、顺序、字段与 HTML 结构完全冻结，本文件只定义数值。
+
+   借鉴的设计规范
+     · Tailwind / Vercel Geist —— 4px 间距刻度、8 档中性灰、字重 400/500/600
+     · Linear —— 极浅 1px 描边、近乎无阴影的卡片、靠留白而非边框分层
+     · Stripe Docs —— 正文 14/16 + 辅助 12 的两档排版、单一强调色
+     · Notion —— 内容优先，区块之间用间距与一条极浅分隔线
+     · GitHub Primer —— 状态语义色成对使用（前景 + 浅底）
+     · Ant Design（中文场景）—— 14px 正文基准、8 的倍数间距
+   ========================================================================= */
+
+:root {
+  /* 间距刻度：4px 基数，只用这 6 档 */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s6: 24px;
+  --s8: 32px;
+
+  /* 字号：4 档 */
+  --fs-display: 24px; /* 项目名 */
+  --fs-title: 20px;   /* 区块标题、当前阶段名 */
+  --fs-body: 14px;    /* 正文与控件 */
+  --fs-meta: 12px;    /* 辅助信息 */
+
+  /* 字重：3 档 */
+  --fw-regular: 400;
+  --fw-medium: 600;
+  --fw-bold: 700;
+
+  /* 中性色：6 档 */
+  --c-fg: #0f172a;
+  --c-fg-2: #475569;
+  --c-fg-3: #94a3b8;
+  --c-line: #e2e8f0;
+  --c-line-soft: #f1f5f9;
+  --c-surface-2: #f8fafc;
+
+  /* 品牌色：1 主 + 1 底 */
+  --c-primary: #1a5bff;
+  --c-primary-hover: #1550e6;
+  --c-primary-soft: #eef3ff;
+
+  /* 语义色：成对使用 */
+  --c-success: #15803d;
+  --c-success-soft: #eefbf4;
+  --c-danger: #b42318;
+  --c-danger-soft: #fef3f2;
+  --c-danger-line: #fecdc9;
+
+  /* 形状：3 档 */
+  --r-card: 8px;
+  --r-sm: 6px;
+  --r-pill: 999px;
+
+  /* 节奏 */
+  --gap-section: var(--s8);
+  --gap-card: var(--s3);
+  --plan-w: 288px;
+}
+
+/* ============================================================================
+   骨架：整屏工作台（固定头部 + 左右两个独立滚动面板）
+   ========================================================================= */
+
+main.kg-space-main {
+  height: 100svh;
+  overflow: hidden;
+}
+
+.kg-space {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.kg-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kg-topbar {
+  flex: 0 0 auto;
+  z-index: 40;
+  background: #fff;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.kg-topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  height: 46px;
+  padding: 0 var(--s8);
+}
+
+.kg-topbar__title h1 {
+  margin: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+}
+
+.kg-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  height: 28px;
+  padding: 0 var(--s2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-2);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.kg-share-btn:hover {
+  background: var(--c-surface-2);
+  color: var(--c-fg);
+}
+
+.kg-share-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kg-workspace {
+  display: grid;
+  grid-template-columns: var(--plan-w) minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1280px) {
+  .kg-workspace {
+    grid-template-columns: 272px minmax(0, 1fr);
+  }
+}
+
+/* ============================================================================
+   左栏：研究过程
+   ========================================================================= */
+
+.kg-plan {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--s6) var(--s6) var(--s8);
+  border-right: 1px solid var(--c-line);
+}
+
+.kg-plan__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-bottom: var(--s4);
+}
+
+.kg-plan__head h2 {
+  margin: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+}
+
+.kg-plan__count {
+  margin-left: var(--s1);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-3);
+}
+
+.kg-plan__panel {
+  display: block;
+}
+
+.kg-plan__label {
+  padding-bottom: var(--s2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  color: var(--c-fg-3);
+}
+
+.kg-plan__label--flow {
+  margin-top: var(--s6);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--c-line-soft);
+}
+
+/* 进行中卡：品牌蓝浅底，表达"当前" */
+.kg-plan__current {
+  padding: var(--s4);
+  border: 1px solid var(--c-primary-soft);
+  border-radius: var(--r-card);
+  background: var(--c-primary-soft);
+}
+
+.kg-plan__current-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.kg-plan__current-no {
+  flex: none;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-plan__current-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kg-plan__current-sub {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--c-fg-2);
+}
+
+.kg-plan__current-meta {
+  display: flex;
+  gap: var(--s4);
+  margin-top: var(--s2);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-plan__current-meta b {
+  font-weight: var(--fw-medium);
+  color: var(--c-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-plan__bar {
+  height: 4px;
+  margin: var(--s3) 0 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: #dfe7fb;
+}
+
+.kg-plan__bar i {
+  display: block;
+  height: 100%;
+  background: var(--c-primary);
+}
+
+/* 后续阶段：时序节点流 */
+.kg-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.kg-timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 22px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s2) 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.kg-timeline__item:hover {
+  background: var(--c-surface-2);
+}
+
+.kg-timeline__item::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--c-line);
+}
+
+.kg-timeline__item:first-child::before {
+  top: 50%;
+}
+
+.kg-timeline__item:last-child::before {
+  bottom: 50%;
+}
+
+.kg-timeline__dot {
+  position: relative;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  margin-left: 2px;
+  border-radius: var(--r-pill);
+  background: #cbd5e1;
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.kg-timeline__dot--active {
+  background: var(--c-primary);
+}
+
+.kg-timeline__dot--done {
+  background: var(--c-success);
+}
+
+.kg-timeline__no {
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-timeline__name {
+  font-size: var(--fs-body);
+  line-height: 22px;
+  color: var(--c-fg-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   右栏：内容区
+   ========================================================================= */
+
+.kg-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-section);
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--s6) var(--s8) var(--s8);
+}
+
+.kg-section {
+  display: block;
+}
+
+.kg-section .kg-card__head {
+  align-items: center;
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--c-line-soft);
+}
+
+.kg-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+
+.kg-card__head h2 {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  line-height: 28px;
+  color: var(--c-fg);
+}
+
+.kg-card__meta {
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-block-label {
+  margin-bottom: var(--s3);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  color: var(--c-fg-3);
+}
+
+/* ---------- 项目条 ---------- */
+
+.kg-dash {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.kg-dash__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 288px;
+  gap: var(--s8);
+  align-items: start;
+}
+
+@media (max-width: 1400px) {
+  .kg-dash__grid {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: var(--s6);
+  }
+}
+
+.kg-dash__subject-row {
+  display: block;
+}
+
+.kg-dash__title {
+  margin: 0;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: 32px;
+  color: var(--c-fg);
+}
+
+.kg-dash__goal {
+  margin: var(--s2) 0 0;
+  font-size: var(--fs-body);
+  line-height: 22px;
+  color: var(--c-fg-2);
+}
+
+.kg-dash__goal b {
+  font-weight: var(--fw-medium);
+  color: var(--c-fg);
+}
+
+.kg-members {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+
+.kg-members__avatars {
+  display: flex;
+}
+
+.kg-avatar-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: -8px;
+  border: 2px solid #fff;
+  border-radius: var(--r-pill);
+  background: var(--kg-av-bg, var(--c-primary));
+  color: #fff;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+}
+
+.kg-avatar-lg:first-child {
+  margin-left: 0;
+}
+
+.kg-members__count {
+  font-size: var(--fs-body);
+  color: var(--c-fg-2);
+}
+
+.kg-dash__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s4);
+}
+
+.kg-dash__right {
+  padding-left: var(--s6);
+  border-left: 1px solid var(--c-line-soft);
+}
+
+.kg-dash__updated {
+  margin-bottom: var(--s1);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kg-dash__pct {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+.kg-dash__pct b {
+  font-size: 28px;
+  font-weight: var(--fw-bold);
+  line-height: 34px;
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-dash__pct span {
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-progress__bar {
+  display: flex;
+  height: 4px;
+  margin: var(--s2) 0 var(--s4);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: var(--c-line-soft);
+}
+
+.kg-progress__bar i {
+  display: block;
+  height: 100%;
+}
+
+.kg-progress__bar i.is-done {
+  background: var(--c-primary);
+}
+
+.kg-progress__bar i.is-active {
+  background: #9dbaff;
+}
+
+.kg-dash__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s3) var(--s4);
+}
+
+.kg-metric {
+  padding: 0;
+  border: 0;
+}
+
+.kg-metric__num {
+  display: block;
+  margin-top: var(--s1);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  line-height: 26px;
+  color: var(--c-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-metric__num.is-active {
+  color: var(--c-primary);
+}
+
+.kg-metric__label {
+  display: block;
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+/* ---------- 当前阶段 ---------- */
+
+.kg-task {
+  display: none;
+}
+
+.kg-task__head {
+  align-items: center;
+  margin-bottom: var(--s4);
+}
+
+.kg-task__id {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.kg-task__no {
+  flex: none;
+  color: var(--c-primary);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-task__title {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  line-height: 28px;
+  color: var(--c-fg);
+}
+
+.kg-task__block + .kg-task__block {
+  margin-top: var(--s6);
+}
+
+/* 子任务：统一的卡片语法 */
+.kg-taskcards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-card);
+}
+
+@media (max-width: 1400px) {
+  .kg-taskcards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.kg-taskcard {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s4);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+  background: #fff;
+  transition: border-color 0.15s ease-out;
+}
+
+.kg-taskcard:hover {
+  border-color: #cbd5e1;
+}
+
+.kg-taskcard--active {
+  border-color: var(--c-primary);
+}
+
+.kg-taskcard__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.kg-taskcard__no {
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-taskcard__title {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+}
+
+.kg-taskcard__desc {
+  margin: var(--s1) 0 0;
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--c-fg-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.kg-taskcard__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin-top: var(--s4);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-taskcard__out b {
+  font-weight: var(--fw-medium);
+  color: var(--c-fg-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 推荐工作流：同一套卡片语法 */
+.kg-workflows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-card);
+}
+
+.kg-workflow {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s4);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+  background: #fff;
+  transition: border-color 0.15s ease-out;
+}
+
+.kg-workflow:hover {
+  border-color: #cbd5e1;
+}
+
+.kg-workflow__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.kg-workflow__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: var(--c-primary);
+}
+
+.kg-workflow__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kg-workflow__tag {
+  padding: 0 var(--s2);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  line-height: 20px;
+  color: var(--c-fg-3);
+}
+
+.kg-workflow__title {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+}
+
+.kg-workflow__desc {
+  margin: var(--s1) 0 0;
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--c-fg-3);
+}
+
+.kg-workflow__foot {
+  margin-top: var(--s4);
+}
+
+/* ---------- 科研成果 ---------- */
+
+.kg-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  padding-bottom: var(--s3);
+}
+
+.kg-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  height: 28px;
+  padding: 0 var(--s3);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-2);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.kg-tab:hover {
+  background: var(--c-surface-2);
+  color: var(--c-fg);
+}
+
+.kg-tab b {
+  font-weight: var(--fw-medium);
+  color: var(--c-fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-files {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kg-file {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s2);
+  border-radius: var(--r-sm);
+  transition: background-color 0.15s ease-out;
+}
+
+.kg-file:hover {
+  background: var(--c-surface-2);
+}
+
+.kg-file__check {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--c-primary);
+}
+
+.kg-file__main {
+  min-width: 0;
+}
+
+.kg-file__title {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.kg-file__name {
+  margin: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kg-file__type {
+  flex: none;
+  padding: 0 var(--s1);
+  border-radius: 4px;
+  background: var(--c-surface-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  line-height: 18px;
+  color: var(--c-fg-3);
+}
+
+.kg-file__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s2);
+  margin-top: var(--s1);
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--c-fg-3);
+}
+
+.kg-file__meta b {
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-2);
+}
+
+.kg-file__sep {
+  color: var(--c-line);
+}
+
+.kg-file__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.kg-outputs__foot {
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--c-line-soft);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+/* ---------- 执行人 ---------- */
+
+.kg-exec {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-avatar-xs {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: var(--r-pill);
+  background: var(--kg-av-bg, var(--c-primary));
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: var(--fw-medium);
+}
+
+/* ============================================================================
+   基础控件：按钮 / 徽标
+   按钮只保留 3 档高度：40 主 / 32 次 / 28 小
+   ========================================================================= */
+
+.kg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s1);
+  height: 32px;
+  padding: 0 var(--s3);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  color: var(--c-fg);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.kg-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kg-btn--primary {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.kg-btn--primary:hover {
+  background: var(--c-primary-hover);
+}
+
+.kg-btn--ghost {
+  background: #fff;
+  border-color: var(--c-line);
+  color: var(--c-fg);
+}
+
+.kg-btn--ghost:hover {
+  background: var(--c-surface-2);
+}
+
+/* 次级主操作（工作流卡片里的「开始科研」）：浅底 + 品牌蓝文字 */
+.kg-btn--primary-soft {
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+}
+
+.kg-btn--primary-soft:hover {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.kg-btn--quiet {
+  height: 28px;
+  padding: 0 var(--s2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-2);
+  background: transparent;
+}
+
+.kg-btn--quiet:hover {
+  background: var(--c-surface-2);
+  color: var(--c-fg);
+}
+
+/* 项目条的两个动作按钮：主按钮强化（更大、更重），次按钮保持克制 */
+.kg-dash__actions .kg-btn {
+  height: 44px;
+  border-radius: var(--r-card);
+}
+
+.kg-dash__actions .kg-btn--primary {
+  padding: 0 var(--s6);
+  font-size: 15px;
+  font-weight: var(--fw-bold);
+}
+
+.kg-dash__actions .kg-btn--primary svg {
+  width: 18px;
+  height: 18px;
+}
+
+.kg-dash__actions .kg-btn--ghost {
+  padding: 0 var(--s4);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  color: var(--c-fg-2);
+}
+
+.kg-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+  background: #fff;
+  color: var(--c-fg-2);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.kg-icon-btn:hover {
+  background: var(--c-surface-2);
+  color: var(--c-fg);
+}
+
+.kg-icon-btn.is-danger:hover {
+  background: var(--c-danger-soft);
+  border-color: var(--c-danger-line);
+  color: var(--c-danger);
+}
+
+.kg-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kg-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 var(--s2);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+.kg-badge--active {
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+}
+
+.kg-badge--done {
+  background: var(--c-success-soft);
+  color: var(--c-success);
+}
+
+.kg-badge--todo {
+  background: var(--c-surface-2);
+  color: var(--c-fg-3);
+}
