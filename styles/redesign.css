@@ -45,9 +45,7 @@
   --c-primary-hover: #1550e6;
   --c-primary-soft: #eef3ff;
 
-  /* 语义色：成对使用 */
-  --c-success: #15803d;
-  --c-success-soft: #eefbf4;
+  /* 功能色：只保留危险色；完成态收进品牌蓝，不用绿色 */
   --c-danger: #b42318;
   --c-danger-soft: #fef3f2;
   --c-danger-line: #fecdc9;
@@ -328,7 +326,7 @@ main.kg-space-main {
 }
 
 .kg-timeline__dot--done {
-  background: var(--c-success);
+  background: var(--c-primary);
 }
 
 .kg-timeline__no {
@@ -1055,8 +1053,8 @@ main.kg-space-main {
 }
 
 .kg-badge--done {
-  background: var(--c-success-soft);
-  color: var(--c-success);
+  background: var(--c-primary);
+  color: #fff;
 }
 
 .kg-badge--todo {
