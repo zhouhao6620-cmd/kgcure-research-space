@@ -21,11 +21,11 @@
   --s6: 24px;
   --s8: 32px;
 
-  /* 字号：4 档（v3 采纳文档站的正文规格：正文 16、辅助 13） */
+  /* 字号：4 档 */
   --fs-display: 24px; /* 项目名 */
   --fs-title: 20px;   /* 区块标题、当前阶段名 */
-  --fs-body: 16px;    /* 正文与控件 */
-  --fs-meta: 13px;    /* 辅助信息 */
+  --fs-body: 14px;    /* 正文与控件 */
+  --fs-meta: 12px;    /* 辅助信息 */
 
   /* 字重：3 档 */
   --fw-regular: 400;
@@ -106,7 +106,7 @@ main.kg-space-main {
   margin: 0;
   font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg);
 }
 
@@ -138,41 +138,27 @@ main.kg-space-main {
 
 .kg-workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--plan-w);
+  grid-template-columns: var(--plan-w) minmax(0, 1fr);
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
 }
 
-/* 左右两个面板各自独立滚动（滚内容时右侧不动），并且都不显示滚动条 */
-.kg-detail,
-.kg-plan {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.kg-detail::-webkit-scrollbar,
-.kg-plan::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 @media (max-width: 1280px) {
   .kg-workspace {
-    grid-template-columns: minmax(0, 1fr) 272px;
+    grid-template-columns: 272px minmax(0, 1fr);
   }
 }
 
 /* ============================================================================
-   右栏：研究过程导航（参考文档站的 ON THIS PAGE）
-   选中项＝蓝色竖线 + 标题 + 状态；未选中项＝只有标题
+   左栏：研究过程
    ========================================================================= */
 
 .kg-plan {
   height: 100%;
   overflow-y: auto;
-  padding: var(--s6) var(--s8) var(--s8) var(--s6);
-  border-left: 1px solid var(--c-line);
+  padding: var(--s6) var(--s6) var(--s8);
+  border-right: 1px solid var(--c-line);
 }
 
 .kg-plan__head {
@@ -185,87 +171,177 @@ main.kg-space-main {
 
 .kg-plan__head h2 {
   margin: 0;
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  letter-spacing: 0.04em;
-  line-height: 20px;
+  line-height: 22px;
+  color: var(--c-fg);
+}
+
+.kg-plan__count {
+  margin-left: var(--s1);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
   color: var(--c-fg-3);
 }
 
-.kg-nav-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.kg-plan__panel {
+  display: block;
 }
 
-/* 整条列表左侧的一条竖线；当前项再用 2px 品牌蓝覆盖这一段 */
-.kg-nav-list::before {
+.kg-plan__label {
+  padding-bottom: var(--s2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  color: var(--c-fg-3);
+}
+
+.kg-plan__label--flow {
+  margin-top: var(--s6);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--c-line-soft);
+}
+
+/* 进行中卡：品牌蓝浅底，表达"当前" */
+.kg-plan__current {
+  padding: var(--s4);
+  border: 1px solid var(--c-primary-soft);
+  border-radius: var(--r-card);
+  background: var(--c-primary-soft);
+}
+
+.kg-plan__current-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.kg-plan__current-no {
+  flex: none;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-plan__current-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 22px;
+  color: var(--c-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kg-plan__current-sub {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--c-fg-2);
+}
+
+.kg-plan__current-meta {
+  display: flex;
+  gap: var(--s4);
+  margin-top: var(--s2);
+  font-size: var(--fs-meta);
+  color: var(--c-fg-3);
+}
+
+.kg-plan__current-meta b {
+  font-weight: var(--fw-medium);
+  color: var(--c-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.kg-plan__bar {
+  height: 4px;
+  margin: var(--s3) 0 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: #dfe7fb;
+}
+
+.kg-plan__bar i {
+  display: block;
+  height: 100%;
+  background: var(--c-primary);
+}
+
+/* 后续阶段：时序节点流 */
+.kg-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.kg-timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 22px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s2) 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.kg-timeline__item:hover {
+  background: var(--c-surface-2);
+}
+
+.kg-timeline__item::before {
   content: "";
   position: absolute;
-  left: 0;
+  left: 6px;
   top: 0;
   bottom: 0;
   width: 1px;
   background: var(--c-line);
 }
 
-.kg-nav-item {
+.kg-timeline__item:first-child::before {
+  top: 50%;
+}
+
+.kg-timeline__item:last-child::before {
+  bottom: 50%;
+}
+
+.kg-timeline__dot {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: baseline;
-  gap: var(--s2);
-  padding: var(--s2) 0 var(--s2) var(--s4);
-  border-radius: 0 var(--r-sm) var(--r-sm) 0;
-  cursor: pointer;
+  width: 8px;
+  height: 8px;
+  margin-left: 2px;
+  border-radius: var(--r-pill);
+  background: #cbd5e1;
+  box-shadow: 0 0 0 3px #fff;
 }
 
-/* 当前项：一道 2px 品牌蓝竖线，是全页唯一的位置指示 */
-.kg-nav-item::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 2px;
-  bottom: 2px;
-  width: 2px;
-  border-radius: 1px;
+.kg-timeline__dot--active {
   background: var(--c-primary);
-  opacity: 0;
 }
 
-.kg-nav-item__no {
-  flex: none;
-  width: 22px;
-  font-size: var(--fs-body);
-  font-weight: var(--fw-medium);
-  line-height: 24px;
+.kg-timeline__dot--done {
+  background: var(--c-primary);
+}
+
+.kg-timeline__no {
+  font-size: var(--fs-meta);
   color: var(--c-fg-3);
   font-variant-numeric: tabular-nums;
 }
 
-.kg-nav-item__title {
-  flex: 0 1 auto;
-  min-width: 0;
+.kg-timeline__name {
   font-size: var(--fs-body);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.kg-nav-item__status {
-  display: none;
-  flex: none;
-  font-size: var(--fs-meta);
-  line-height: 20px;
-  color: var(--c-fg-3);
-  white-space: nowrap;
-}
-
-.kg-nav-item:hover .kg-nav-item__title {
-  color: var(--c-fg);
 }
 
 /* ============================================================================
@@ -357,7 +433,7 @@ main.kg-space-main {
 .kg-dash__goal {
   margin: var(--s2) 0 0;
   font-size: var(--fs-body);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg-2);
 }
 
@@ -580,14 +656,14 @@ main.kg-space-main {
   margin: var(--s3) 0 0;
   font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg);
 }
 
 .kg-taskcard__desc {
   margin: var(--s1) 0 0;
   font-size: var(--fs-meta);
-  line-height: 20px;
+  line-height: 18px;
   color: var(--c-fg-3);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -668,14 +744,14 @@ main.kg-space-main {
   margin: var(--s3) 0 0;
   font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg);
 }
 
 .kg-workflow__desc {
   margin: var(--s1) 0 0;
   font-size: var(--fs-meta);
-  line-height: 20px;
+  line-height: 18px;
   color: var(--c-fg-3);
 }
 
@@ -758,7 +834,7 @@ main.kg-space-main {
   margin: 0;
   font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  line-height: 24px;
+  line-height: 22px;
   color: var(--c-fg);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -772,7 +848,7 @@ main.kg-space-main {
   background: var(--c-surface-2);
   font-size: var(--fs-meta);
   font-weight: var(--fw-regular);
-  line-height: 20px;
+  line-height: 18px;
   color: var(--c-fg-3);
 }
 
@@ -783,7 +859,7 @@ main.kg-space-main {
   gap: var(--s1) var(--s2);
   margin-top: var(--s1);
   font-size: var(--fs-meta);
-  line-height: 20px;
+  line-height: 18px;
   color: var(--c-fg-3);
 }
 
@@ -906,10 +982,10 @@ main.kg-space-main {
   color: var(--c-fg);
 }
 
-/* 项目条的两个动作按钮：大圆角胶囊；主按钮更重，次按钮克制 */
+/* 项目条的两个动作按钮：主按钮强化（更大、更重），次按钮保持克制 */
 .kg-dash__actions .kg-btn {
   height: 44px;
-  border-radius: var(--r-pill);
+  border-radius: var(--r-card);
 }
 
 .kg-dash__actions .kg-btn--primary {
@@ -928,35 +1004,6 @@ main.kg-space-main {
   font-size: var(--fs-body);
   font-weight: var(--fw-regular);
   color: var(--c-fg-2);
-}
-
-/* 文字链：工作流卡片里的「了解工作流」 */
-.kg-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s1);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-medium);
-  color: var(--c-primary);
-  cursor: pointer;
-  transition: color 0.15s ease-out;
-}
-
-.kg-link:hover {
-  color: var(--c-primary-hover);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.kg-link__arrow {
-  transition: transform 0.15s ease-out;
-}
-
-.kg-link:hover .kg-link__arrow {
-  transform: translateX(2px);
 }
 
 .kg-icon-btn {
